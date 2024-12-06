@@ -67,6 +67,10 @@ h1:hover {
   color: var(--sec-color);
 }
 
+.active1{
+  border-bottom: 3px solid var(--main-color);
+}
+
 .slider h2 {
   font-size: 2vw;
   letter-spacing: 0.3rem;
@@ -163,7 +167,7 @@ a {
 }
 
 .slider:last-child{
-  height: 140vh;
+  height: 110vh;
 }
 .blueish{
   background-color: var(--main-color);
@@ -224,7 +228,7 @@ a {
 
 .text-section p {
   padding: 9px;
-  line-height: 1.5;
+  line-height: 2;
   color: var(--third-color);
 }
 
@@ -296,15 +300,17 @@ a {
   color: var(--sec-color);
 }
 
-.about-card ul{
-  
+.lists-container{
+  padding: 0 20px;
 }
+
 .about-card li {
     list-style: none;
     padding: 0;
     line-height: 2.5;
     color: var(--third-color);
-  }
+    font-size: 1.1rem;
+}
 /* expandable cards */
 .item-1 {
   margin: 0 15px; 
@@ -398,7 +404,6 @@ a {
 .dashboard {
   display: flex;
   flex-wrap: wrap;
-  
 }
 
 .progress{
@@ -432,6 +437,7 @@ a {
   right: 0;
   margin: auto;
 }
+
 
 .bg {
   fill: none;
@@ -592,29 +598,12 @@ form input::placeholder, #message-input::placeholder{
   
 }
 
-/* #email-input {
-
-} */
-
 @media (max-width: 1100px) {
   .container{
     width: min(600px, 100%);
     border-radius: 0;
   }
 }
-
-form div.incorrect label {
-  background-color: #f06272;
-}
-
-form div.incorrect input{
-  border-color: #f06272;
-}
-
-#error-message{
-  color: #f06272;
-}
-
 
 .button-form{
   width: 200px;
@@ -654,6 +643,58 @@ form div.incorrect input{
   width: 60%;
 }
 
+/* loading */
+
+#result{
+  font-size: 0.7rem;
+  display: none;
+}
+
+.load-wrapp {
+  width: 100px;
+  margin: auto;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.line {
+  display: inline-block;
+  width: 15px;
+  height: 5px;
+  border-radius: 15px;
+  background-color: var(--sec-color);
+}
+
+.success{
+  color: rgb(25, 255, 25);
+}
+.failed{
+  color: rgb(255, 25, 25);
+}
+
+.load-2 .line:nth-last-child(1){
+  animation: loadingSend 1.5s 1s infinite;
+}
+
+.load-2 .line:nth-last-child(2) {
+  animation: loadingSend 1.5s 0.5s infinite;
+}
+
+.load-2 .line:nth-last-child(3) {
+  animation: loadingSend 1.5s 0s infinite;
+}
+
+@keyframes loadingSend {
+  0% {
+    width: 15px;
+  }
+  50% {
+    width: 35px;
+  }
+  100% {
+    width: 15px;
+  }
+}
 
 /* icon contacts */
 .soc-med{
@@ -714,7 +755,7 @@ form div.incorrect input{
       background: rgb(0, 0, 0);
     }
     &:nth-child(3) a:before{
-      background: #0077b5;
+      background: #7289da;
     }
     &:last-child a:before{
       background: #dd4b39;

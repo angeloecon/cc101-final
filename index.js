@@ -4,6 +4,8 @@ SliderJS - Ettrics;
 Design - Sara Mazal Web;
 Fonts - Google Fonts
 */
+/*particlejs*/ 
+
 window.onload = function () {
   Particles.init({
     selector: ".background"
@@ -24,7 +26,8 @@ const particles = Particles.init({
     }
   ]
 });
-/**/
+
+/* expandable cards*/
 const ITEMS = document.querySelectorAll('.item-1')
 ITEMS.forEach(item =>{
   item.addEventListener('click',() => {
@@ -38,63 +41,30 @@ function removeActionClasses(){
 })}
 
 
-/**/ 
+/*current tab*/
+const navLinks = document.querySelectorAll('.nav-tab');
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll', () => {
+  let current = '';
 
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
 
-const formDesign = document.getElementById('form-field');
-const firstname_input = document.getElementById('username-input');
-const email_input = document.getElementById('email-input');
-const message_input = document.getElementById('message-input');
-const error_message = document.getElementById("error-message")
-
-formDesign.addEventListener('submit', (e) => {
-  let errors = []
-  if (firstname_input) {
-    errors = getSignupFormErrors(firstname_input.value, email_input.value, message_input.value);
-  } else {
-    errors = getLoginFormErrors(email_input.value, password_input.value);
-  }
-
-  if (errors.length > 0) {
-    e.preventDefault()
-    error_message.innerHTML = errors.join(". ")
-  }
-})
-
-function getSignupFormErrors(firstname, email, message) {
-  let errors = []
-
-  if (firstname === "" || firstname == null) {
-    errors.push('Firstname is required')
-    firstname_input.parentElement.classList.add("incorrect");
-  }
-
-  if (email === "" || email == null) {
-    errors.push('Email is required')
-    email_input.parentElement.classList.add("incorrect");
-  }
-
-  if (message === "" || message == null) {
-    errors.push('Message is required')
-    message_input.parentElement.classList.add("incorrect");
-  }
-
-  return errors;
-}
-
-
-const allInput = [firstname_input, email_input, message_input].filter(input => input != null)
-
-allInput.forEach(input => {
-  input.addEventListener('input', () => {
-    if (input.parentElement.classList.contains("incorrect")) {
-      input.parentElement.classList.remove('incorrect')
-      error_message.innerText = ""
+    if (window.scrollY >= sectionTop - sectionHeight / 3) {
+      current = section.getAttribute('id');
     }
-  })
+  });
+
+  navLinks.forEach(link => {
+    link.classList.remove('active1');
+    if (link.getAttribute('href') === `#${current}`) {
+      link.classList.add('active1');
+    }
+  });
 });
 
-
+/* form-field*/ 
 const form = document.getElementById('form-field');
 const result = document.getElementById('result');
 
@@ -103,7 +73,7 @@ form.addEventListener('submit', function (e) {
   const formData = new FormData(form);
   const object = Object.fromEntries(formData);
   const json = JSON.stringify(object);
-  result.innerHTML = "Please wait..."
+  result.style.display = 'block'
 
   fetch('https://api.web3forms.com/submit', {
     method: 'POST',
@@ -117,6 +87,7 @@ form.addEventListener('submit', function (e) {
       let json = await response.json();
       if (response.status == 200) {
         result.innerHTML = "Form submitted successfully";
+        result.classList.add("success");
       } else {
         console.log(response);
         result.innerHTML = json.message;
@@ -125,6 +96,7 @@ form.addEventListener('submit', function (e) {
     .catch(error => {
       console.log(error);
       result.innerHTML = "Something went wrong!";
+      result.classList.add("failed");
     })
     .then(function () {
       form.reset();
@@ -134,116 +106,3 @@ form.addEventListener('submit', function (e) {
     });
 });
 
-// class NavigationPage {
-//   constructor() {
-//     this.currentId = null;
-//     this.currentTab = null;
-//     this.tabContainerHeight = 70;
-//     this.lastScroll = 0;
-//     let self = this;
-//     $(".nav-tab").click(function () {
-//       self.onTabClick(event, $(this));
-//     });
-//     $(window).scroll(() => {
-//       this.onScroll();
-//     });
-//     $(window).resize(() => {
-//       this.onResize();
-//     });
-//   }
-
-//   onTabClick(event, element) {
-//     event.preventDefault();
-//     let scrollTop =
-//       $(element.attr("href")).offset().top - this.tabContainerHeight + 1;
-//     $("html, body").animate({ scrollTop: scrollTop }, 600);
-//   }
-
-//   onScroll() {
-//     this.checkHeaderPosition();
-//     this.findCurrentTabSelector();
-//     this.lastScroll = $(window).scrollTop();
-//   }
-
-//   onResize() {
-//     if (this.currentId) {
-//       this.setSliderCss();
-//     }
-//   }
-
-//   checkHeaderPosition() {
-//     const headerHeight = 75;
-//     if ($(window).scrollTop() > headerHeight) {
-//       $(".nav-container").addClass("nav-container--scrolled");
-//     } else {
-//       $(".nav-container").removeClass("nav-container--scrolled");
-//     }
-//     let offset =
-//       $(".nav").offset().top +
-//       $(".nav").height() -
-//       this.tabContainerHeight -
-//       headerHeight;
-//     if (
-//       $(window).scrollTop() > this.lastScroll &&
-//       $(window).scrollTop() > offset
-//     ) {
-//       $(".nav-container").addClass("nav-container--move-up");
-//       $(".nav-container").removeClass("nav-container--top-first");
-//       $(".nav-container").addClass("nav-container--top-second");
-//     } else if (
-//       $(window).scrollTop() < this.lastScroll &&
-//       $(window).scrollTop() > offset
-//     ) {
-//       $(".nav-container").removeClass("nav-container--move-up");
-//       $(".nav-container").removeClass("nav-container--top-second");
-//       $(".nav-container-container").addClass("nav-container--top-first");
-//     } else {
-//       $(".nav-container").removeClass("nav-container--move-up");
-//       $(".nav-container").removeClass("nav-container--top-first");
-//       $(".nav-container").removeClass("nav-container--top-second");
-//     }
-//   }
-
-//   findCurrentTabSelector(element) {
-//     let newCurrentId;
-//     let newCurrentTab;
-//     let self = this;
-//     $(".nav-tab").each(function () {
-//       let id = $(this).attr("href");
-//       let offsetTop = $(id).offset().top - self.tabContainerHeight;
-//       let offsetBottom =
-//         $(id).offset().top + $(id).height() - self.tabContainerHeight;
-//       if (
-//         $(window).scrollTop() > offsetTop &&
-//         $(window).scrollTop() < offsetBottom
-//       ) {
-//         newCurrentId = id;
-//         newCurrentTab = $(this);
-//       }
-//     });
-//     if (this.currentId != newCurrentId || this.currentId === null) {
-//       this.currentId = newCurrentId;
-//       this.currentTab = newCurrentTab;
-//       this.setSliderCss();
-//     }
-//   }
-
-//   setSliderCss() {
-//     let width = 0;
-//     let left = 0;
-//     if (this.currentTab) {
-//       width = this.currentTab.css("width");
-//       left = this.currentTab.offset().left;
-//     }
-//     $(".nav-tab-slider").css("width", width);
-//     $(".nav-tab-slider").css("left", left);
-//   }
-// }
-
-// new NavigationPage();
-/* Credit and Thanks:
-Matrix - Particles.js;
-SliderJS - Ettrics;
-Design - Sara Mazal Web;
-Fonts - Google Fonts
-*/
